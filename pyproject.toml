@@ -17,7 +17,6 @@ python = ">=3.10,<4.0"
 [tool.poetry.group.dev.dependencies]
 black = "^22.10.0"
 isort = "^5.10.1"
-twine = "^4.0.2"
 
 [build-system]
 requires = ["poetry-core"]

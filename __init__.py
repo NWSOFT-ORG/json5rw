@@ -1,4 +1,7 @@
-from src.loader import loads, load
+from src.dumper import dump, dumps
+from src.loader import load, loads
 
-loads = loads
+dump = dump
+dumps = dumps
 load = load
+loads = loads

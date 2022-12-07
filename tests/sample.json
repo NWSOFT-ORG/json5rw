@@ -1,0 +1,668 @@
+// menu.json from NWEdit
+// A considerably large JSON file for testing!
+
+/*
+Creates the menu for NWEdit
+Config is in the format:
+"[cascade_name]@A": {}   <- A cascade OR
+"item_name": {icon, mnemonic, function, imports, disable, platform}   <- An item in a cascade
+----
+The 'function' should be a lambda call. You may use 'obj' to reference a class that uses the menu
+The 'imports' should be a Python import string, with the object name.
+For example: "path.to.class -> Object"
+If it is a built-in, or a package installed with NWEdit, you can use direct import statements
+For example: "package"
+The 'platform' is a platform marker, and it should be W, !W, M, !M, L, !L
+*/
+
+{
+    /**
+     * 'menu' refers to the menu that is currently being created
+     */
+    "@place_holders": {
+        "@---": 0xABC,
+        "@<->": "items.append(obj.TouchBarItems.Space.Flexible())"
+    },
+    /*
+    Main menubar (NWEdit, File, Edit...)
+    Used by src.Editor
+    */
+    "main": {
+        "[NWEdit]@M": {
+            "About NWEdit": {
+                "icon": "info",
+                "mnemonic": null,
+                "function": "AboutDialog(obj.master)",
+                "imports": "src.Components.commondialog -> AboutDialog",
+                "disable": false,
+                "platform": "M"
+            },
+            "[Settings]@M": {
+                "General Settings": {
+                    "icon": "gear",
+                    "mnemonic": "comma",
+                    "function": "obj.open_file(\"Config/general-settings.json\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "M"
+                },
+                "Run command settings": {
+                    "icon": "gear",
+                    "mnemonic": null,
+                    "function": "obj.open_file(\"Config/cmd-settings.json\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "M"
+                },
+                "Lexer settings": {
+                    "icon": "gear",
+                    "mnemonic": null,
+                    "function": "obj.open_file(\"Config/lexer-settings.json\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "M"
+                },
+                "Comment markers": {
+                    "icon": "gear",
+                    "mnemonic": null,
+                    "function": "obj.open_file(\"Config/comment-markers.json\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "M"
+                },
+                "File types for New File": {
+                    "icon": "gear",
+                    "mnemonic": null,
+                    "function": "obj.open_file(\"Config/file-extens.json\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "M"
+                },
+                "File icons": {
+                    "icon": "gear",
+                    "mnemonic": null,
+                    "function": "obj.open_file(\"Config/file-icons.json\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "M"
+                },
+                "@---": null,
+                "[Backup Settings]@A": {
+                    "Save Settings...": {
+                        "icon": "save-as",
+                        "mnemonic": null,
+                        "function": "ZipSettings(obj.master).zipsettings()",
+                        "imports": "src.SettingsParser.zip_settings -> ZipSettings",
+                        "disable": false,
+                        "platform": "M"
+                    },
+                    "Load Settings...": {
+                        "icon": "open",
+                        "mnemonic": null,
+                        "function": "ZipSettings(obj.master).unzipsettings()",
+                        "imports": "src.SettingsParser.zip_settings -> ZipSettings",
+                        "disable": false,
+                        "platform": "M"
+                    }
+                }
+            },
+            "@---": null,
+            "Quit": {
+                "icon": "close",
+                "mnemonic": "q",
+                "function": "obj.exit()",
+                "imports": null,
+                "disable": false,
+                "platform": "M"
+            }
+        },
+        "[File]@A": {
+            "New...": {
+                "icon": "new",
+                "mnemonic": "n",
+                "function": "obj.filetree.new_item()",
+                "imports": null,
+                "disable": false,
+                "platform": "A"
+            },
+            "[Open...]@A": {
+                "Open File": {
+                    "icon": "open",
+                    "mnemonic": "o",
+                    "function": "obj.open_file()",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "A"
+                },
+                "Open File in Hex": {
+                    "icon": "open",
+                    "mnemonic": null,
+                    "function": "obj.open_hex()",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "A"
+                },
+                "Open Folder": {
+                    "icon": "open",
+                    "mnemonic": "shift-o",
+                    "function": "obj.open_dir()",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "A"
+                },
+                "Clone From Git...": {
+                    "icon": "clone",
+                    "mnemonic": null,
+                    "function": "obj.git(\"clone\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "A"
+                }
+            },
+            "Save Copy to": {
+                "icon": "save-as",
+                "mnemonic": "shift-s",
+                "function": "obj.save_as()",
+                "imports": null,
+                "disable": true,
+                "platform": "A"
+            },
+            "Close Tab": {
+                "icon": "close",
+                "mnemonic": "w",
+                "function": "obj.close_tab()",
+                "imports": null,
+                "disable": true,
+                "platform": "A"
+            },
+            "Reload All": {
+                "icon": "reload",
+                "mnemonic": null,
+                "function": "obj.reload()",
+                "imports": null,
+                "disable": true,
+                "platform": "A"
+            }
+        },
+        "[Edit]@A": {
+            "Undo": {
+                "icon": "undo",
+                "mnemonic": "z",
+                "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).undo()",
+                "imports": "src.Components.tktext -> TextOpts",
+                "disable": true,
+                "platform": "A"
+            },
+            "Redo": {
+                "icon": "redo",
+                "mnemonic": "shift-z",
+                "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).redo()",
+                "imports": "src.Components.tktext -> TextOpts",
+                "disable": true,
+                "platform": "A"
+            },
+            "Cut": {
+                "icon": "cut",
+                "mnemonic": "x",
+                "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).cut()",
+                "imports": "src.Components.tktext -> TextOpts",
+                "disable": true,
+                "platform": "A"
+            },
+            "Copy": {
+                "icon": "copy",
+                "mnemonic": "c",
+                "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).copy()",
+                "imports": "src.Components.tktext -> TextOpts",
+                "disable": true,
+                "platform": "A"
+            },
+            "Paste": {
+                "icon": "paste",
+                "mnemonic": "v",
+                "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).paste()",
+                "imports": "src.Components.tktext -> TextOpts",
+                "disable": true,
+                "platform": "A"
+            },
+            "Duplicate Line or Selected": {
+                "icon": null,
+                "mnemonic": "d",
+                "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).duplicate_line()",
+                "imports": "src.Components.tktext -> TextOpts",
+                "disable": true,
+                "platform": "A"
+            },
+            "[Indent...]@A": {
+                "Indent": {
+                    "icon": "indent",
+                    "mnemonic": "i",
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).indent(\"indent\")",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                },
+                "Unindent": {
+                    "icon": "unindent",
+                    "mnemonic": "u",
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).indent(\"unindent\")",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                }
+            },
+            "Join Lines": {
+                "icon": null,
+                "mnemonic": null,
+                "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).join_lines()",
+                "imports": "src.Components.tktext -> TextOpts",
+                "disable": true,
+                "platform": "A"
+            },
+            "[Case...]@A": {
+                "Swap Case": {
+                    "icon": null,
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).swap_case()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                },
+                "Upper Case": {
+                    "icon": "upper",
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).upper_case()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                },
+                "Lower Case": {
+                    "icon": "lower",
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).lower_case()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                }
+            },
+            "[Select...]@A": {
+                "Select All": {
+                    "icon": "sel-all",
+                    "mnemonic": "a",
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).select_all()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                },
+                "Select Line": {
+                    "icon": null,
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).sel_line()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                },
+                "Select Word": {
+                    "icon": null,
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).sel_word()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                },
+                "Select Previous Word": {
+                    "icon": null,
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).sel_word_left()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                },
+                "Select Next Word": {
+                    "icon": null,
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).sel_word_right()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                }
+            },
+            "[Delete...]@A": {
+                "Delete Selected": {
+                    "icon": "delete",
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).delete()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                },
+                "Delete Word": {
+                    "icon": "delete",
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).delete()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                },
+                "Delete Previous Word": {
+                    "icon": "delete",
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).delete()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                },
+                "Delete Next Word": {
+                    "icon": "delete",
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).delete()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                }
+            },
+            "[Move line...]@A": {
+                "Up": {
+                    "icon": null,
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).mv_line_up()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                },
+                "Down": {
+                    "icon": null,
+                    "mnemonic": null,
+                    "function": "TextOpts(obj.master, keyaction=obj.key).set_text(obj.get_text).mv_line_dn()",
+                    "imports": "src.Components.tktext -> TextOpts",
+                    "disable": true,
+                    "platform": "A"
+                }
+            }
+        },
+        "[Code]@A": {
+            "Run": {
+                "icon": "run",
+                "mnemonic": "b",
+                "function": "CodeFunctions(obj.master, obj.get_text, obj.bottom_tabs).run()",
+                "imports": "src.codefunctions -> CodeFunctions",
+                "disable": true,
+                "platform": "A"
+            },
+            "Lint": {
+                "icon": "lint",
+                "mnemonic": null,
+                "function": "CodeFunctions(obj.master, obj.get_text, obj.bottom_tabs).lint_source()",
+                "imports": "src.codefunctions -> CodeFunctions",
+                "disable": true,
+                "platform": "A"
+            },
+            "Auto-Format": {
+                "icon": "format",
+                "mnemonic": null,
+                "function": "CodeFunctions(obj.master, obj.get_text, obj.bottom_tabs).autopep()",
+                "imports": "src.codefunctions -> CodeFunctions",
+                "disable": true,
+                "platform": "A"
+            },
+            "[Open Shell...]@A": {
+                "Open System Shell": {
+                    "icon": "term",
+                    "mnemonic": null,
+                    "function": "CodeFunctions(obj.master, obj.get_text, obj.bottom_tabs).system_shell()",
+                    "imports": "src.codefunctions -> CodeFunctions",
+                    "disable": false,
+                    "platform": "A"
+                },
+                "Open Python Shell": {
+                    "icon": "py-term",
+                    "mnemonic": "F2",
+                    "function": "CodeFunctions(obj.master, obj.get_text, obj.bottom_tabs).python_shell()",
+                    "imports": "src.codefunctions -> CodeFunctions",
+                    "disable": false,
+                    "platform": "A"
+                }
+            }
+        },
+        "[View]@A": {
+            "Unit tests": {
+                "icon": null,
+                "mnemonic": null,
+                "function": "TestDialog(obj.bottom_tabs, obj.filetree.path)",
+                "imports": "src.Components.testdialog -> TestDialog",
+                "disable": false,
+                "platform": "A"
+            },
+            "Code structure": {
+                "icon": null,
+                "mnemonic": null,
+                "function": "CodeListDialog(obj.bottom_tabs, obj.get_text)",
+                "imports": "src.Components.codelistdialog -> CodeListDialog",
+                "disable": true,
+                "platform": "A"
+            },
+            "Insert Ascii Art": {
+                "icon": null,
+                "mnemonic": null,
+                "function": "StyleWindow(obj.master, obj.get_text, obj.key)",
+                "imports": "src.Components.textstyle -> StyleWindow",
+                "disable": true,
+                "platform": "A"
+            }
+        },
+        "[Navigate]@A": {
+            "Go to...": {
+                "icon": null,
+                "mnemonic": "shift-n",
+                "function": "Navigate(obj.get_text)",
+                "imports": "src.Components.goto -> Navigate",
+                "disable": true,
+                "platform": "A"
+            },
+            "Find and Replace": {
+                "icon": "search",
+                "mnemonic": "f",
+                "function": "Search(obj.bottom_tabs, obj.get_text)",
+                "imports": "src.Components.search -> Search",
+                "disable": true,
+                "platform": "A"
+            },
+            "Search in Directory": {
+                "icon": null,
+                "mnemonic": null,
+                "function": "SearchInDir(obj.bottom_tabs, obj.filetree.path, obj.open_file)",
+                "imports": "src.Components.searchindir -> SearchInDir",
+                "disable": false,
+                "platform": "A"
+            }
+        },
+        "[Tools]@A": {
+            "View Plugins": {
+                "icon": "gear",
+                "mnemonic": null,
+                "function": "PluginView(obj.master)",
+                "imports": "src.Plugins.plugins_view -> PluginView",
+                "disable": false,
+                "platform": "A"
+            },
+            "@---": null,
+            "[Settings]@!M": {
+                "General Settings": {
+                    "icon": "gear",
+                    "mnemonic": "comma",
+                    "function": "obj.open_file(\"Config/general-settings.json\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "A"
+                },
+                "Run command settings": {
+                    "icon": "gear",
+                    "mnemonic": null,
+                    "function": "obj.open_file(\"Config/cmd-settings.json\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "A"
+                },
+                "Lexer settings": {
+                    "icon": "gear",
+                    "mnemonic": null,
+                    "function": "obj.open_file(\"Config/lexer-settings.json\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "A"
+                },
+                "Comment markers": {
+                    "icon": "gear",
+                    "mnemonic": null,
+                    "function": "obj.open_file(\"Config/comment-markers.json\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "A"
+                },
+                "File types for New File": {
+                    "icon": "gear",
+                    "mnemonic": null,
+                    "function": "obj.open_file(\"Config/file-extens.json\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "A"
+                },
+                "File icons": {
+                    "icon": "gear",
+                    "mnemonic": null,
+                    "function": "obj.open_file(\"Config/file-icons.json\")",
+                    "imports": null,
+                    "disable": false,
+                    "platform": "A"
+                },
+                "@---": null,
+                "[Backup Settings]@A": {
+                    "Save Settings...": {
+                        "icon": "save-as",
+                        "mnemonic": null,
+                        "function": "ZipSettings(obj.master).zipsettings()",
+                        "imports": "src.SettingsParser.zip_settings -> ZipSettings",
+                        "disable": false,
+                        "platform": "A"
+                    },
+                    "Load Settings...": {
+                        "icon": "open",
+                        "mnemonic": null,
+                        "function": "ZipSettings(obj.master).unzipsettings()",
+                        "imports": "src.SettingsParser.zip_settings -> ZipSettings",
+                        "disable": false,
+                        "platform": "A"
+                    }
+                }
+            }
+        },
+        "[Git]@A": {
+            "Commit": {
+                "icon": null,
+                "mnemonic": "shift-k",
+                "function": "obj.git(\"commit\")",
+                "imports": null,
+                "disable": false,
+                "platform": "A"
+            },
+            "Init": {
+                "icon": null,
+                "mnemonic": null,
+                "function": "subprocess.Popen('git init && git add . && git commit -am \"Added files\"',hell=True,cwd=obj.filetree.path,)",
+                "imports": "subprocess",
+                "disable": false,
+                "platform": "A"
+            }
+        },
+        "[Help]@A": {
+            "About NWEdit": {
+                "icon": "info",
+                "mnemonic": null,
+                "function": "AboutDialog(obj.master)",
+                "imports": "src.Components.commondialog -> AboutDialog",
+                "disable": false,
+                "platform": "!M"
+            },
+            "NWEdit Documentation": {
+                "icon": null,
+                "mnemonic": null,
+                "function": "HelpView(obj.master)",
+                "imports": "src.Components.helpview -> HelpView",
+                "disable": false,
+                "platform": "A"
+            }
+        }
+    },
+    /*
+    The menu shown on the start dialog (the modal to select projects to open)
+    Used by src.Components.startdialog
+    */
+    "start_dialog": {
+        "[NWEdit]@M": {
+            "About NWEdit": {
+                "icon": "info",
+                "mnemonic": null,
+                "function": "AboutDialog(obj.master)",
+                "imports": "src.Components.commondialog -> AboutDialog",
+                "disable": false,
+                "platform": "A"
+            },
+            "@---": null,
+            "Quit": {
+                "icon": "close",
+                "mnemonic": "q",
+                "function": "sys.exit(0)",
+                "imports": "sys",
+                "disable": false,
+                "platform": "A"
+            }
+        },
+        "[Project]@A": {
+            "Open Project": {
+                "icon": "open",
+                "mnemonic": "shift-o",
+                "function": "obj.open_project_dialog()",
+                "imports": null,
+                "disable": false,
+                "platform": "A"
+            }
+        },
+        "[Help]@A": {
+            "About NWEdit": {
+                "icon": "info",
+                "mnemonic": null,
+                "function": "AboutDialog(obj.master)",
+                "imports": "src.Components.commondialog -> AboutDialog",
+                "disable": false,
+                "platform": "!M"
+            },
+            "NWEdit Documentation": {
+                "icon": null,
+                "mnemonic": null,
+                "function": "HelpView(obj.master)",
+                "imports": "src.Components.helpview -> HelpView",
+                "disable": false,
+                "platform": "A"
+            }
+        }
+    },
+    // The TouchBar works on macOS only!
+    "touchbar": {
+        "open": {
+            "function": "obj.open_file()",
+            "imports": null,
+            "disable": false
+        },
+        "save-as": {
+            "function": "obj.save_as()",
+            "imports": null,
+            "disable": true
+        },
+        "@<->": null, // Flexible space
+        "run": {
+            "function": "CodeFunctions(obj.master, obj.get_text, obj.bottom_tabs).run()",
+            "imports": null,
+            "disable": false
+        }
+    }
+}
